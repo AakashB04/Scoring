@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Interview Scoring</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>🎥 AI Interview – Real-Time Non-Verbal Scoring</h1>
+    <p class="desc">Click <b>Start</b> to begin analyzing your hand gestures and expressions.<br>
+      Click <b>Stop</b> when done to view your final score.</p>
+
+    <div class="buttons">
+      <button id="startBtn" class="btn start">Start</button>
+      <button id="stopBtn" class="btn stop">Stop</button>
+    </div>
+
+    <div class="score-display">
+      <h2>Final Score:</h2>
+      <p id="score">0.00</p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('startBtn').addEventListener('click', async () => {
+      await fetch('/start');
+      document.getElementById('score').innerText = "Analyzing...";
+    });
+
+    document.getElementById('stopBtn').addEventListener('click', async () => {
+      const res = await fetch('/stop');
+      const data = await res.json();
+      document.getElementById('score').innerText = (data.final_score * 100).toFixed(1) + " / 100";
+    });
+  </script>
+</body>
+</html>
